@@ -3,7 +3,7 @@ import React from "react";
 import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 // react components for routing our app without refresh
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -23,57 +23,64 @@ import Header from "./Header";
 
 const useStyles = makeStyles(styles);
 
+const routes = [
+  {
+    page : "/",
+    title : "Link"
+  },
+  {
+    page : "/login-page",
+    title : "Link"
+  },
+  {
+    page : "/landing-page",
+    title : "Link"
+  },
+    {
+    page : "/profile-page",
+    title : "Link"
+  },
+]
+
 export default function HeaderLinks(props) {
   const classes = useStyles();
   return (
     <List className={classes.list}>
       <ListItem className={classes.listItem}>
-            <Header
-              brand="Menu"
-              color="transparent"
-              leftLinks={
-                <List className={classes.list}>
-                  <ListItem className={classes.listItem}>
-                    <Button
-                      className={classes.navLink}
-                      onClick={e => e.preventDefault()}
-                      color="transparent"
-                    >
-                      Link
+        <List className={classes.list}>
+  {        routes.map(item => 
+          <ListItem className={classes.listItem}>
+            <NavLink to={item.page}>
+              <Button
+                className={classes.navLink}
+                // onClick={e => e.preventDefault()}
+                color="transparent"
+              >
+                {item.title}
                     </Button>
-                  </ListItem>
-                  <ListItem className={classes.listItem}>
-                    <Button
-                      href="#pablo"
-                      className={classes.navLink}
-                      onClick={e => e.preventDefault()}
-                      color="transparent"
-                    >
-                      Link
-                    </Button>
-                  </ListItem>
-                  <ListItem className={classes.listItem}>
-                    <CustomDropdown
-                      buttonText="Dropdown"
-                      dropdownHeader="Dropdown Header"
-                      buttonProps={{
-                        className: classes.navLink,
-                        color: "transparent"
-                      }}
-                      dropdownList={[
-                        "Action",
-                        "Another action",
-                        "Something else here",
-                        { divider: true },
-                        "Separated link",
-                        { divider: true },
-                        "One more separated link"
-                      ]}
-                    />
-                  </ListItem>
-                </List>
-              }
+            </NavLink>
+          </ListItem>
+          )}
+          <ListItem className={classes.listItem}>
+            <CustomDropdown
+              buttonText="Dropdown"
+              dropdownHeader="Dropdown Header"
+              buttonProps={{
+                className: classes.navLink,
+                color: "transparent"
+              }}
+              dropdownList={[
+                "Action",
+                "Another action",
+                "Something else here",
+                { divider: true },
+                "Separated link",
+                { divider: true },
+                "One more separated link"
+              ]}
             />
+          </ListItem>
+        </List>
       </ListItem>
     </List>
   );
