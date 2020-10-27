@@ -40,6 +40,10 @@ const routes = [
     page : "/profile-page",
     title : "Link"
   },
+  {
+    page : "/editor",
+    title : "Editor"
+  },
 ]
 
 export default function HeaderLinks(props) {
