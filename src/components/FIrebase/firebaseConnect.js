@@ -1,20 +1,20 @@
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app'
 import { functions } from 'firebase';
 
 var firebaseConfig = {
-  apiKey: "AIzaSyANJCeO-UmWhgYXnpY2PpynG4ctS8Uhw7Q",
-  authDomain: "casi-d6696.firebaseapp.com",
-  databaseURL: "https://casi-d6696.firebaseio.com",
-  projectId: "casi-d6696",
-  storageBucket: "casi-d6696.appspot.com",
-  messagingSenderId: "898945885065",
-  appId: "1:898945885065:web:91c55e46e7b864ae01f758"
+    apiKey: "AIzaSyAepYvU1BivlITK2fc32n1SQQTYzjRoV9E",
+    authDomain: "material-kit-cec6e.firebaseapp.com",
+    databaseURL: "https://material-kit-cec6e.firebaseio.com",
+    projectId: "material-kit-cec6e",
+    storageBucket: "material-kit-cec6e.appspot.com",
+    messagingSenderId: "979964379147",
+    appId: "1:979964379147:web:8572fc9d3056d0d371c70e",
+    measurementId: "G-LVWW5NVD35"
 };
   // Initialize Firebase
 
 
   export const firebaseConnect = firebase.initializeApp(firebaseConfig);
-  var data = firebase.database().ref('homeData');
   // sữa dử liệu nè
   // data.set({
   //     id:3,
