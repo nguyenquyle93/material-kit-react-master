@@ -13,13 +13,18 @@ import Button from "components/CustomButtons/Button.js";
 import styles from "assets/jss/material-kit-react/views/landingPageSections/workStyle.js";
 import * as firebase from 'firebase'
 import { connectData, connectData2, connectData3, connectData4, connectData5, connectData6, newPost } from '../../../components/FIrebase/firebaseConnect'
-// import { message} from 'antd'
+import { message, Row, Col, Card, Input, AutoComplete } from 'antd'
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
 import { EditorState, ContentState } from 'draft-js'
 import { convertToRaw } from 'draft-js'
 import draftToHtml from 'draftjs-to-html'
+import Editor from "../Editor";
 
 const useStyles = makeStyles(styles);
-
+const { Option } = Select;
+const pageOptions = ["user", "post", "request", "chart/ECharts", "chart/highCharts", "pages6", "chart/Recharts"]
 export default function WorkSection() {
 
   const [editorContent, setEditorContent] = useState();
@@ -28,39 +33,40 @@ export default function WorkSection() {
   const [imageLink, setImageLink] = useState();
   const [data, setData] = useState([]);
   const [dataFilter, setDataFilter] = useState([]);
-  const [page, setPage] = useState(connectData);
+  const [page, setPage] = useState();
   const [pageLink, setPageLink] = useState();
+  const [pagePost, setPagePost] = useState();
 
 
   const update = (value) => {
-    value.on('value', (notes) => {
-      var arrayData = []
-      notes.forEach((element) => {
-        const id = element.key
-        const title = element.val().title
-        const imageLink = element.val().imageLink
-        const content = element.val().content
-        const createAt = element.val().createAt
-        arrayData.push({
-          id: id,
-          title: title,
-          imageLink: imageLink,
-          content: content,
-          createAt: createAt,
-          editorContent: content
-        })
-      })
-      console.log("1111111", arrayData)
-      this.setState({ data: arrayData })
-    })
+    // value.on('value', (notes) => {
+    //   var arrayData = []
+    //   notes.forEach((element) => {
+    //     const id = element.key
+    //     const title = element.val().title
+    //     const imageLink = element.val().imageLink
+    //     const content = element.val().content
+    //     const createAt = element.val().createAt
+    //     arrayData.push({
+    //       id: id,
+    //       title: title,
+    //       imageLink: imageLink,
+    //       content: content,
+    //       createAt: createAt,
+    //       editorContent: content
+    //     })
+    //   })
+    //   setData(arrayData)
+    // })
+    console.log("11111")
   }
   const onsuccess = () => {
-      setEditorContent(null)
-      setHtmlContent(null)
-      setTitle(null)
-      setImageLink(null)
-      setData([])
-      setDataFilter([])
+    setEditorContent(null)
+    setHtmlContent(null)
+    setTitle(null)
+    setImageLink(null)
+    setData([])
+    setDataFilter([])
   }
 
   useEffect(() => {
@@ -127,11 +133,14 @@ export default function WorkSection() {
   }
 
   const onChangePage = (index) => {
+    const value = index.target.value
     const pageSelect = [connectData, connectData2, connectData3, connectData4, connectData5, connectData6, newPost]
-    onsuccess()
-    setPage(pageSelect[index])
-    setPageLink(page[index])
-    update(pageSelect[index])
+    console.log("11111",value)
+    // onsuccess()
+    setPage(pageSelect[value])
+    setPageLink(pageOptions[index])
+    // update(pageSelect[index])
+    setPagePost(index)
   }
 
   const classes = useStyles();
@@ -139,7 +148,7 @@ export default function WorkSection() {
     <div className={classes.section}>
       <GridContainer justify="center">
         <GridItem cs={12} sm={12} md={8}>
-          <h2 className={classes.title}>Work with us</h2>
+          <h2 className={classes.title}>Editor</h2>
           <h4 className={classes.description}>
             Divide details about your product or agency work into parts. Write a
             few lines about each one and contact us about any further
@@ -149,37 +158,52 @@ export default function WorkSection() {
           <form>
             <GridContainer>
               <GridItem xs={12} sm={12} md={6}>
-                <CustomInput
-                  labelText="Your Name"
-                  id="name"
-                  formControlProps={{
-                    fullWidth: true
-                  }}
-                />
+                <InputLabel id="demo-simple-select-helper-label">Age</InputLabel>
+                <Select
+                  labelId="demo-simple-select-helper-label"
+                  id="demo-simple-select-helper"
+                  value={pagePost}
+                  onChange={onChangePage}
+                >
+                  {pageOptions.map((item, index) => <MenuItem value={index}>{item}</MenuItem>)}
+                </Select>
               </GridItem>
               <GridItem xs={12} sm={12} md={6}>
-                <CustomInput
-                  labelText="Your Email"
-                  id="email"
-                  formControlProps={{
-                    fullWidth: true
-                  }}
+                <AutoComplete
+                  style={{ width: "100%", marginTop: 10 }}
+                  size="large"
+                  placeholder="tile search"
+                  options={data?.map((item) => {
+                    return { ...item, value: item.title }
+                  })}
+                  onSelect={onSelect}
+                // filterOption={(inputValue, option) =>
+                //   option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !==
+                //   -1
+                // }
                 />
               </GridItem>
-              <CustomInput
-                labelText="Your Message"
-                id="message"
-                formControlProps={{
-                  fullWidth: true,
-                  className: classes.textArea
-                }}
-                inputProps={{
-                  multiline: true,
-                  rows: 5
-                }}
-              />
+                {/* <Editor
+                  value={dataFilter[0]?.content}
+                  wrapperStyle={{
+                    overflow: "auto",
+                    height: "100vh"
+                  }}
+                  editorStyle={{
+                    height: "85vh"
+                  }}
+                  contentBlock={'contentState'}
+                  // editorState={editorContent}
+                  onEditorStateChange={onEditorStateChange}
+                /> */}
               <GridItem xs={12} sm={12} md={4}>
-                <Button color="primary">Send Message</Button>
+                <Button color="success" onClick={handleCreate}>Create</Button>
+              </GridItem>
+              <GridItem xs={12} sm={12} md={4}>
+                <Button color="rose" onClick={handleDelete}>Delete</Button>
+              </GridItem>
+              <GridItem xs={12} sm={12} md={4}>
+                <Button color="primary" onClick={handleEdit}>Edit</Button>
               </GridItem>
             </GridContainer>
           </form>
