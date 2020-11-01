@@ -8,7 +8,7 @@ var firebaseConfig = {
   projectId: "casi-d6696",
   storageBucket: "casi-d6696.appspot.com",
   messagingSenderId: "898945885065",
-  appId: "1:898945885065:web:91c55e46e7b864ae01f758"
+  appId: "1:898945885065:web:aaa2489ac7cb116201f758"
 };
   // Initialize Firebase
 
