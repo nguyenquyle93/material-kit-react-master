@@ -20,14 +20,17 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { EditorState, ContentState } from 'draft-js'
 import { convertToRaw } from 'draft-js'
 import draftToHtml from 'draftjs-to-html'
-import Editor from "../Editor";
+import { Editor } from 'react-draft-wysiwyg';
+import { convertFromRaw } from 'draft-js';
+import '../../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 const useStyles = makeStyles(styles);
 const { Option } = Select;
 const pageOptions = ["user", "post", "request", "chart/ECharts", "chart/highCharts", "pages6", "chart/Recharts"]
+const content = { "entityMap": {}, "blocks": [{ "key": "637gr", "text": "Initialized from content state.", "type": "unstyled", "depth": 0, "inlineStyleRanges": [], "entityRanges": [], "data": {} }] };
 export default function WorkSection() {
 
-  const [editorContent, setEditorContent] = useState();
+  const [editorContent, setEditorContent] = useState({});
   const [htmlContent, setHtmlContent] = useState();
   const [title, setTitle] = useState();
   const [imageLink, setImageLink] = useState();
@@ -73,10 +76,14 @@ export default function WorkSection() {
     update(page)
   }, []);
 
-  const onEditorStateChange = (editorContent) => {
+  // const onEditorStateChange = (editorContent) => {
+  //   setEditorContent(editorContent);
+  //   setHtmlContent(draftToHtml(convertToRaw(editorContent.getCurrentContent())));
+  // }
+
+  const onContentStateChange = (contentState) => {
     setEditorContent(editorContent);
-    setHtmlContent(draftToHtml(convertToRaw(editorContent.getCurrentContent())));
-  }
+  };
 
   const handleInputChange = (e) => {
     setTitle(e.target.value)
@@ -135,7 +142,6 @@ export default function WorkSection() {
   const onChangePage = (index) => {
     const value = index.target.value
     const pageSelect = [connectData, connectData2, connectData3, connectData4, connectData5, connectData6, newPost]
-    console.log("11111",value)
     // onsuccess()
     setPage(pageSelect[value])
     setPageLink(pageOptions[index])
@@ -183,19 +189,29 @@ export default function WorkSection() {
                 // }
                 />
               </GridItem>
-                {/* <Editor
-                  value={dataFilter[0]?.content}
-                  wrapperStyle={{
-                    overflow: "auto",
-                    height: "100vh"
-                  }}
-                  editorStyle={{
-                    height: "85vh"
-                  }}
-                  contentBlock={'contentState'}
-                  // editorState={editorContent}
-                  onEditorStateChange={onEditorStateChange}
-                /> */}
+              <GridItem xs={12} sm={12} md={12}>
+              <Editor
+                wrapperClassName="demo-wrapper"
+                editorClassName="demo-editor"
+                // value={dataFilter[0]?.content}
+                // wrapperStyle={{
+                //   overflow: "auto",
+                //   height: "100vh",
+                //   width: "100vw",
+                //   zIndex: "10"
+                // }}
+                // editorStyle={{
+                //   height: "85vh",
+                //   width: "100vw",
+                //   zIndex: "10"
+                // }}
+                // contentBlock={'contentState'}
+                // editorState={editorContent}
+                // initialContentState={editorContent}
+                // onEditorStateChange={onEditorStateChange}
+                // onContentStateChange={onContentStateChange}
+              />
+              </GridItem>
               <GridItem xs={12} sm={12} md={4}>
                 <Button color="success" onClick={handleCreate}>Create</Button>
               </GridItem>
